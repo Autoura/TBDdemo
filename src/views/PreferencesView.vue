@@ -2,8 +2,8 @@
   <div class="service">
     <h1>Hospitality & Travel preferences</h1>
 
-    <div v-if="did">
-      <p class="did">Your DID is: <strong>{{did.uri}}</strong></p>
+    <div v-if="my_did">
+      <p class="did">Your DID is: <strong>{{my_did.uri}}</strong></p>
 
       <button @click="callAutouraService">Call preferences service</button>
 
@@ -30,12 +30,12 @@ export default {
   name: 'ServiceView',
   data() {
     return {
-      did: null,
+      my_did: null,
       response: {}
     };
   },
   mounted() {
-    this.did = didTools.get_my_did();
+    this.my_did = didTools.get_my_did();
   },
   methods: {
 
@@ -99,8 +99,6 @@ export default {
     async callAutouraService() {
       try {
 
-        let portableDid = didTools.get_my_did();
-
         // TODO - Support ANY Autoura.me DID
         // 1) Lookup the DID document - https://github.com/decentralized-identity/web-did-resolver
         // 2) Get the serviceURL from the DID Document for the preferences service
@@ -110,7 +108,7 @@ export default {
         const serviceUrl = "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/preferences";
 
         // Sign the payload as a JWT
-        const signedJWT = await this.createJWT(portableDid.privateKeys[0], portableDid.uri, portableDid.uri);
+        const signedJWT = await this.createJWT(this.my_did.privateKeys[0], this.my_did.uri, this.my_did.uri);
 
         // Call Autoura.me service
         const response = await fetch(serviceUrl, {
