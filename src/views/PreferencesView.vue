@@ -104,11 +104,11 @@ export default {
         // 2) Get the serviceURL from the DID Document for the preferences service
         // 3) Create JWT using a supported verification method (We know what Autoura supports so this check is not necessary in this proof of concept code)
 
-        // Autoura.me service URL
-        const serviceUrl = "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/preferences";
-
         // Sign the payload as a JWT
         const signedJWT = await this.createJWT(this.my_did.privateKeys[0], this.my_did.uri, this.my_did.uri);
+
+        // Autoura.me service URL
+        const serviceUrl = "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/preferences";
 
         // Call Autoura.me service
         const response = await fetch(serviceUrl, {
