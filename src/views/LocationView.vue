@@ -1,5 +1,5 @@
 <template>
-  <div class="service">
+  <div class="location">
     <h1>Current location</h1>
 
   </div>
