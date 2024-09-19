@@ -10,10 +10,7 @@ You can use DIDs to:
 
 This example code uses [TBD](https://developer.tbd.website) DIDs.
 
-* [Autoura developer documentation](https://www.autoura.com/docs/api/profiles)
-* [Profile structure](https://www.autoura.com/docs/api/profiles/structure) (API documentation)
-
-If you are not quite sure what a DID is and how you can use them, [read the Autoura introduction](https://www.autoura.com/docs/api/profiles)
+If you are not quite sure what a DID is and how you can use them, or what this demo is demonstrating, [read the Autoura introduction](https://www.autoura.com/docs/api/profiles)
 
 ### How to use
 
