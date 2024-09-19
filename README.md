@@ -27,7 +27,7 @@ Once you have this running (locally)
 npm install
 ```
 
-There is no TBD install required. Just works "out of the box".
+There is no TBD install or registration required. Just works "out of the box".
 
 #### Compiles and hot-reloads for development
 ```
