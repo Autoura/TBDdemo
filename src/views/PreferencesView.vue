@@ -99,6 +99,8 @@ export default {
     async callAutouraService() {
       try {
 
+        this.response = {};
+
         // TODO - Support ANY Autoura.me DID
         // 1) Lookup the DID document - https://github.com/decentralized-identity/web-did-resolver
         // 2) Get the serviceURL from the DID Document for the preferences service

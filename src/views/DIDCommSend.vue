@@ -115,7 +115,7 @@ export default {
 
       return signatureBase64url;
     },
-    
+
     async deriveKEK(sharedSecret, keyLengthBits, algorithmId) {
       return await this.concatKdf(sharedSecret, keyLengthBits, algorithmId);
     },
@@ -131,6 +131,8 @@ export default {
 
     async sendDIDComm() {
       try {
+
+        this.response = {};
 
         // Step 1: Create the message
         const message = {
@@ -163,8 +165,6 @@ export default {
           payload: messagePayloadEncoded,
           signature: signatureBase64url
         };
-
-        console.log("Signed Message: ", signedMessage);
 
         // Step 5: Derive the shared secret using ECDH
         const recipientPublicKeyJwk = didTools.get_test_did_public_key(); // Recipient's public key in JWK format
@@ -279,8 +279,6 @@ export default {
           iv: didTools.base64urlEncode(iv),  // Base64URL encoded IV
           tag: didTools.base64urlEncode(tag)  // Base64URL encoded authentication tag
         };
-
-        console.log("Encrypted Payload: ", encryptedPayload);
 
         // Step 11: Send the encrypted message to the service
         const serviceUrl = "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/message";
