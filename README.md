@@ -20,19 +20,25 @@ Once you have this running (locally)
 2. Go to any of the services in the top menu 
 3. If you have selected preferences, tap the button to call preferences service. 1 second later the preferences will appear on the screen
 
-### Original Vue app notes
+### Make it work
 
 #### Project setup
 ```
 npm install
 ```
 
+There is no TBD install required. Just works "out of the box".
+
 #### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
+This all works on localhost, no need to build and publish.
+
 #### Compiles and minifies for production
 ```
 npm run build
 ```
+
+We just said no need to build and publish, but hey if you want you can :)
