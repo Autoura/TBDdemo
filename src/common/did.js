@@ -4,7 +4,7 @@ let my_did = null;
 
 // This JavasScript based demo will work with ANY Autoura.me DID. Should work with any other JsonWebKey2020 DID with a publicly resolvable DID Document (that uses the same style of encryption). There are other encryption methods that Autoura.me core platform supports, this code is just A variant
 // 1) Put the DID in test_did
-// 2) Go to the DID Document for this DID - e.g. put the DID in the DIF Universal Resolver https://dev.uniresolver.io/ and hit "get document". Find the verification methods section of the DID Document response
+// 2) Go to the DID Document for this DID - e.g. put the DID in the DIF Universal Resolver https://resolver.identity.foundation/ and hit "get document". Find the verification methods section of the DID Document response
 // 3) Copy the full JsonWebKey2020 section that relates to the DID you are using into test_did_verification_method
 // 4) Set the three service URLs (as these are DID specific). You can get these from the DID Document
 // 5) Thats it. If setting an Autoura.me DID this code now can access that DID's preferences, location, and that DID can now receive DIDComm messages from this demo code. (Does rely on the DID owner, i.e. the consumer, giving the right permissions too, via the Autoura Connect app)
