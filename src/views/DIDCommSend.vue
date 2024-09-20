@@ -281,7 +281,7 @@ export default {
         };
 
         // Step 11: Send the encrypted message to the service
-        const serviceUrl = "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/message";
+        const serviceUrl = didTools.get_test_did_service_url('messages');
         const response = await fetch(serviceUrl, {
           method: "POST",
           headers: {
