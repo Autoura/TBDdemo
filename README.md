@@ -22,7 +22,7 @@ Once you have this running (locally)
 
 You can update this code with any Autoura.me DID and will work. [See note and configuration in did.js](https://github.com/Autoura/TBDdemo/blob/main/src/common/did.js)
 
-Further instructions on how to get started with TBD & Autoura are on the (Autoura get started page)[https://www.autoura.com/docs/api/profiles/getstarted].
+Further instructions on how to get started with TBD & Autoura are on the [Autoura get started page](https://www.autoura.com/docs/api/profiles/getstarted).
 
 ### Make it work
 
