@@ -31,7 +31,7 @@ Further instructions on how to get started with TBD & Autoura are on the [Autour
 npm install
 ```
 
-There is no TBD install or registration required. Just works "out of the box".
+There is no Autoura or TBD install or registration required. Just works "out of the box".
 
 #### Compiles and hot-reloads for development
 ```
