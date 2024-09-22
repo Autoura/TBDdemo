@@ -2,7 +2,7 @@
   <div class="home">
 
     <div style="padding-top:30px; padding-bottom:30px;">
-      <img alt="Autoura Logo" height="150" src="../assets/autoura.png" style="padding-right: 20px;">
+      <img alt="Autoura Logo" height="150" src="https://www.autoura.com/img/autoura.png" style="padding-right: 20px;">
       <img alt="TBD Logo" height="150" src="../assets/tbd.png" style="padding-left: 20px;">
     </div>
 
