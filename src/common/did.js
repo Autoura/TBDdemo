@@ -9,11 +9,11 @@ let my_did = null;
 // 4) Set the three service URLs (as these are DID specific). You can get these from the DID Document
 // 5) Thats it. If setting an Autoura.me DID this code now can access that DID's preferences, location, and that DID can now receive DIDComm messages from this demo code. (Does rely on the DID owner, i.e. the consumer, giving the right permissions too, via the Autoura Connect app)
 
-let test_did = "did:web:did.autoura.me:api:did:profile:NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH..:..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1..:..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn";
+let test_did = "did:web:did.autoura.me:api:did:profile:eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq..:..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0..:..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx";
 let test_did_verification_method = {
-    "id": "did:web:did.autoura.me:api:did:profile:NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH..:..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1..:..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn#key-1",
+    "id": "did:web:did.autoura.me:api:did:profile:eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq..:..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0..:..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx#key-1",
     "type": "JsonWebKey2020",
-    "controller": "did:web:did.autoura.me:api:did:profile:NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH..:..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1..:..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn",
+    "controller": "did:web:did.autoura.me:api:did:profile:eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq..:..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0..:..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx",
     "publicKeyJwk": {
         "kty": "EC",
         "crv": "P-256",
@@ -22,9 +22,9 @@ let test_did_verification_method = {
     }
 }
 let test_did_service_url = {
-    'preferences': "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/preferences",
-    'location': "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/location",
-    "messages": "https://api.autoura.com/api/did/services/profile/NGpWL080RjFwSUJoallCSGtDdmtDeWhIRnNDVlRUUmdjOW5aUnI2VFVGbHVHSk5CYmh0U3lmemlkUEVlYTMyUWd1U096L1J6ajVH../..VTN6QWFxNW03Qllqc1VaZjExMXFUREdMNnc2YlNXTERkZ1Q5b0hQVHFHdlVKMDhJUGlpN0hLcnBjTWh6YkE0cURVQ3grcVVDLzV1../..dkQ4V3dSOTd3czRkKy9yVCtkRXlUSWtVY3Y5ME5UWVozK2NnRVZqbFpn/message"
+    'preferences': "https://api.autoura.com/api/did/services/profile/eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq../..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0../..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx/preferences",
+    'location': "https://api.autoura.com/api/did/services/profile/eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq../..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0../..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx/location",
+    "messages": "https://api.autoura.com/api/did/services/profile/eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq../..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0../..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx/message"
 };
 
 export const didTools = {
