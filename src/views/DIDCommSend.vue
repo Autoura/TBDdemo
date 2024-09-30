@@ -136,9 +136,9 @@ export default {
 
         // Step 1: Create the message
         const message = {
-          "@type": "https://didcomm.org/message/1.0",
+          "type": "https://didcomm.org/basicmessage/2.0/message",
           "from": this.my_did.uri,
-          "to": didTools.get_test_did(),
+          "to": [didTools.get_test_did()],
           "id": "1234567890",
           "body": {
             "message": "Hello from TBDDemo"
