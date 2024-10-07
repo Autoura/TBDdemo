@@ -3,7 +3,7 @@
     <h1>Current location</h1>
 
     <div v-if="my_did">
-      <p class="did">Your DID is: <strong>{{my_did.uri}}</strong></p>
+      <p class="did">Your business DID is: <strong>{{my_did.uri}}</strong></p>
 
       <button @click="callAutouraService">Call location service</button>
 

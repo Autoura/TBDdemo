@@ -11,7 +11,8 @@
 
     <!-- Display the DID or a default message -->
     <div v-if="did">
-      <p class="did">Your DID is: <strong>{{did.uri}}</strong></p>
+      <p class="did">Your business DID (from TBD) is: <strong>{{did.uri}}</strong></p>
+      <p class="did">The consumer's DID (from Autoura.me) is: <strong>{{consumer_did}}</strong></p>
     </div>
     <div v-else>
       <p>Hey, you don't have a DID yet!</p>
@@ -30,7 +31,8 @@ export default {
   name: 'HomeView',
   data() {
     return {
-      did: null
+      did: null,
+      consumer_did: didTools.get_test_did()
     };
   },
   mounted() {
