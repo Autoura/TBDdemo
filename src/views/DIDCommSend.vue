@@ -3,7 +3,7 @@
     <h1>DIDComm send</h1>
 
     <div v-if="my_did">
-      <p class="did">Your DID is: <strong>{{my_did.uri}}</strong></p>
+      <p class="did">Your business DID is: <strong>{{my_did.uri}}</strong></p>
 
       <button @click="sendDIDComm">Send DIDComm message</button>
 
@@ -24,6 +24,7 @@
 
 import {didTools} from "@/common/did";
 import sodium from 'libsodium-wrappers';
+import nacl from "tweetnacl";
 
 export default {
   name: 'DIDCommView',
@@ -87,6 +88,19 @@ export default {
       }
 
       return derivedKey.slice(0, keyLengthBytes);
+    },
+
+    async generateX25519KeyPair() {
+      const keyPair = nacl.box.keyPair(); // Generates a key pair using X25519
+
+      return {
+        publicKey: keyPair.publicKey,
+        privateKey: keyPair.secretKey
+      };
+    },
+
+    x25519(privateKey, publicKey) {
+      return nacl.scalarMult(privateKey, publicKey);
     },
 
     async signMessageEd25519(message, privateKeyJwk) {
@@ -166,38 +180,16 @@ export default {
           signature: signatureBase64url
         };
 
-        // Step 5: Derive the shared secret using ECDH
-        const recipientPublicKeyJwk = didTools.get_test_did_public_key(); // Recipient's public key in JWK format
+        // Step 5: Derive the shared secret using X25519
+        const recipientPublicKeyMultibase = didTools.get_test_did_keyagreement_public_key();
+        const recipientPublicKeyBytes = didTools.decodeMultibase(recipientPublicKeyMultibase);
 
-        const importedRecipientPublicKey = await crypto.subtle.importKey(
-            "jwk",
-            recipientPublicKeyJwk,
-            {name: "ECDH", namedCurve: "P-256"},
-            true,
-            []
-        );
+        // Generate an ephemeral key pair for X25519
+        const ephemeralKeyPair = await this.generateX25519KeyPair();
+        const ephemeralPublicKeyBytes = ephemeralKeyPair.publicKey;
 
-        // Generate an ephemeral key pair for ECDH
-        const ephemeralKeyPair = await crypto.subtle.generateKey(
-            {
-              name: "ECDH",
-              namedCurve: "P-256"
-            },
-            true,
-            ["deriveKey", "deriveBits"]
-        );
-
-        // Derive the shared secret using ECDH
-        const sharedSecretBuffer = await crypto.subtle.deriveBits(
-            {
-              name: "ECDH",
-              public: importedRecipientPublicKey
-            },
-            ephemeralKeyPair.privateKey,
-            256  // Derive a 256-bit shared secret
-        );
-
-        const sharedSecret = new Uint8Array(sharedSecretBuffer);
+        // Derive the shared secret using X25519
+        const sharedSecret = await this.x25519(ephemeralKeyPair.privateKey, recipientPublicKeyBytes);
 
         // Step 6: Derive the KEK using Concat KDF
         const kekBits = await this.deriveKEK(sharedSecret, 256, 'A256KW');
@@ -248,19 +240,21 @@ export default {
         const ciphertext = encryptedContentArray.slice(0, -tagLength);
         const tag = encryptedContentArray.slice(-tagLength);
 
-        // Step 10: Create the protected header and build the final encrypted payload
-        const ephemeralPublicKeyJwk = await crypto.subtle.exportKey("jwk", ephemeralKeyPair.publicKey); // Export ephemeral public key
+        // Convert the ephemeral public key to Base64URL for inclusion in JWK format
+        const ephemeralPublicKeyBase64url = didTools.base64urlEncode(ephemeralPublicKeyBytes);
+
+        // Create the ephemeral public key JWK object
+        const ephemeralPublicKeyJwk = {
+          kty: "OKP",  // Key type for X25519
+          crv: "X25519",  // Curve for X25519 key agreement
+          x: ephemeralPublicKeyBase64url  // Base64URL encoded public key bytes
+        };
 
         const protectedHeader = {
-          alg: "ECDH-ES+A256KW",
+          alg: "X25519+A256KW",
           enc: "A256GCM",
           typ: "application/didcomm-encrypted+json",
-          epk: {
-            kty: ephemeralPublicKeyJwk.kty,
-            crv: ephemeralPublicKeyJwk.crv,
-            x: ephemeralPublicKeyJwk.x,
-            y: ephemeralPublicKeyJwk.y
-          }
+          epk: ephemeralPublicKeyJwk
         };
 
         const protectedHeaderEncoded = didTools.base64urlEncode(JSON.stringify(protectedHeader));
@@ -270,8 +264,8 @@ export default {
           protected: protectedHeaderEncoded,
           recipients: [{
             header: {
-              kid: didTools.get_test_did_kid(),  // Recipient's key ID
-              alg: "ECDH-ES+A256KW"
+              kid: didTools.get_test_did_keyagreement_kid(),
+              alg: "X25519+A256KW"
             },
             encrypted_key: didTools.base64urlEncode(wrappedKeyUint8)  // Base64URL encode the AES-wrapped symmetric key
           }],

@@ -3,24 +3,19 @@ import nacl from "tweetnacl";
 
 let my_did = null;
 
-// This JavasScript based demo will work with ANY Autoura.me DID. Should work with any other JsonWebKey2020 DID with a publicly resolvable DID Document (that uses the same style of encryption). There are other encryption methods that Autoura.me core platform supports, this code is just A variant
+// This JavasScript based demo will work with ANY Autoura.me DID
 // 1) Put the DID in test_did
 // 2) Go to the DID Document for this DID - e.g. put the DID in the DIF Universal Resolver https://resolver.identity.foundation/ and hit "get document". Find the verification methods section of the DID Document response
-// 3) Copy the full JsonWebKey2020 section that relates to the DID you are using into test_did_verification_method
+// 3) Copy the full X25519KeyAgreementKey2020 section into test_did_keyagreement
 // 4) Set the three service URLs (as these are DID specific). You can get these from the DID Document
 // 5) Thats it. If setting an Autoura.me DID this code now can access that DID's preferences, location, and that DID can now receive DIDComm messages from this demo code. (Does rely on the DID owner, i.e. the consumer, giving the right permissions too, via the Autoura Connect app)
 
 let test_did = "did:web:did.autoura.me:api:did:profile:eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq..:..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0..:..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx";
-let test_did_verification_method = {
-    "id": "did:web:did.autoura.me:api:did:profile:eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq..:..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0..:..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx#key-1",
-    "type": "JsonWebKey2020",
+let test_did_keyagreement = {
+    "id": "#key-3",
+    "type": "X25519KeyAgreementKey2020",
     "controller": "did:web:did.autoura.me:api:did:profile:eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq..:..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0..:..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx",
-    "publicKeyJwk": {
-        "kty": "EC",
-        "crv": "P-256",
-        "x": "zam9B0EqSKe-WO_i2D9AvFt_mRa3JPZCQSGxiNp3NRc",
-        "y": "27BSAfl7A3pL4SSlIAPknEeLyXi1X_7SgZJDOXiUqHQ"
-    }
+    "publicKeyMultibase": "zirUUZ12p43dtpFv3ri4euvMfcYXSpDGa5ZKWRJJgLQy"
 }
 let test_did_service_url = {
     'preferences': "https://api.autoura.com/api/did/services/profile/eEJ6QzZpVUZSVWhmZ3A2Y1Y4UnAwREdkZkJrcytRZUIxZ2VERkdTVWhMeEZmYVVkNnQxRnhYNjAwOGxjZGMzVm5tU1EwQStxdkNq../..QXlWRG1XcTM1RHp3MHExTUluN1B3VkNOaXViRkdTZkVKTWs2emtjczhXQkI0TnZDMmFIM0VxNEtKSTZNQVF3SzR4MU9uY2EyUFQ0../..RmpHRk9iZHNsMy9od2JSSnBUQ2QzZFNZNTdKNE54UWdKSzdUWU5KK3Qx/preferences",
@@ -45,16 +40,34 @@ export const didTools = {
         return test_did;
     },
 
-    get_test_did_public_key() {
-        return test_did_verification_method.publicKeyJwk;
+    get_test_did_keyagreement_kid() {
+      return test_did_keyagreement.id;
+    },
+
+    get_test_did_keyagreement_public_key() {
+        return test_did_keyagreement.publicKeyMultibase;
     },
 
     get_test_did_service_url(style) {
         return test_did_service_url[style];
     },
 
-    get_test_did_kid() {
-        return test_did_verification_method.id;
+    encodeMultibase(bytes, encoding) {
+        if (encoding === 'base58btc') {
+            const base58String = this.base58Encode(bytes);
+            return `z${base58String}`;
+        } else {
+            throw new Error('Unsupported multibase encoding');
+        }
+    },
+
+    decodeMultibase(multibaseString) {
+        if (multibaseString.startsWith('z')) {
+            const base58String = multibaseString.slice(1);
+            return this.decodeBase58(base58String);
+        } else {
+            throw new Error('Unsupported multibase encoding');
+        }
     },
 
     base64urlEncode(input) {
@@ -96,6 +109,25 @@ export const didTools = {
         }
 
         return outputArray;
+    },
+
+    base58Encode(bytes) {
+        const alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+        let encoded = '';
+        let num = BigInt('0x' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join(''));
+        while (num > 0) {
+            const remainder = num % 58n;
+            num = num / 58n;
+            encoded = alphabet[remainder] + encoded;
+        }
+        for (const byte of bytes) {
+            if (byte === 0) {
+                encoded = '1' + encoded;
+            } else {
+                break;
+            }
+        }
+        return encoded;
     },
 
     decodeBase58(base58) {
