@@ -155,7 +155,7 @@ export default {
           "to": [didTools.get_test_did()],
           "id": "1234567890",
           "body": {
-            "message": "Hello from TBDDemo"
+            "content": "Hello from TBDDemo"
           }
         };
 
