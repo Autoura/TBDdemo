@@ -71,14 +71,16 @@ export const didTools = {
     },
 
     base64urlEncode(input) {
-        // Check if the input is a Uint8Array or a string
-        if (input instanceof Uint8Array) {
-            // Convert Uint8Array to a string first before encoding
-            input = String.fromCharCode.apply(null, input);
+        // If the input is a string, convert it to a Uint8Array using TextEncoder
+        if (typeof input === 'string') {
+            input = new TextEncoder().encode(input); // Convert string to Uint8Array
         }
 
-        // Now Base64 encode the string
-        return btoa(input)
+        // Convert Uint8Array to a binary string
+        const binaryString = Array.from(input, byte => String.fromCharCode(byte)).join('');
+
+        // Base64 encode the binary string and make it URL-safe
+        return btoa(binaryString)
             .replace(/\+/g, "-")  // Replace '+' with '-'
             .replace(/\//g, "_")  // Replace '/' with '_'
             .replace(/=+$/, "");  // Strip padding '='
